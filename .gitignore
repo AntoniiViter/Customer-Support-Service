@@ -1,0 +1,71 @@
+# Java and Spring Boot
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+
+# Build directories
+/build/
+out/
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Logs
+*.log
+logs/
+
+# IDEs and Editors
+/.idea/
+/*.iml
+.vscode/
+*.swp
+*.swo
+*.editorconfig
+*.project
+*.settings/
+/*.factorypath
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Application files
+application.properties
+application-dev.properties
+
+# Node.js (for frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# React specific
+/dist/
+
+# Coverage and Test Reports
+/test-output/
+coverage/
+*.lcov
+
+# Temporary files
+*.tmp
+*.bak
+*.old
+*.orig
+
+# Dependency directories
+.mvn/
+
+# Environment files
+.env
+
+# Generated files by Spring Boot DevTools
+.spring-boot-devtools.properties
+
+# JetBrains IDEs
+.idea/
+*.iws
+*.ipr
