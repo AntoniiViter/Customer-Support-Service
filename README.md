@@ -41,13 +41,13 @@ The application is a customer support service with the following key functionali
 
 ### **1. Database Connections**
 
-- **1.1. Set up PostgreSQL Connection**: *In Progress*
+- **1.1. Set up PostgreSQL Connection**: *Done*
 
-- **1.2. Set up MongoDB Connection**: *In Progress*
+- **1.2. Set up MongoDB Connection**: *Done*
 
 ### **2. Model Connection (ChatGPT Integration)**
 
-- **2.1. Set up API Connection to ChatGPT**: *To Do*
+- **2.1. Set up API Connection to ChatGPT**: *In Progress*
 
 ### **3. Authentication and Session Logic**
 
