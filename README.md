@@ -47,11 +47,11 @@ The application is a customer support service with the following key functionali
 
 ### **2. Model Connection (ChatGPT Integration)**
 
-- **2.1. Set up API Connection to ChatGPT**: *In Progress*
+- **2.1. Set up API Connection to ChatGPT**: *Done*
 
 ### **3. Authentication and Session Logic**
 
-- **3.1. Implement User Authentication for Corporations**: *To Do*
+- **3.1. Implement User Authentication for Corporations**: *In Progress*
 
 - **3.2. Manage Client Sessions**: *To Do*
 
@@ -62,3 +62,31 @@ The application is a customer support service with the following key functionali
 - **4.2. Conversation Handling and Escalation Logic**: *To Do*
 
 ### **5. Frontend Integration**: *Backlog*
+
+---
+
+### **Potential Improvement: Integrating Vector Databases for Enhanced Performance**
+
+While the current integration with OpenAI's ChatGPT and Spring AI provides a solid foundation for handling customer support inquiries, there is a potential improvement that could further optimize performance: using Vector Databases (VectorDBs) in conjunction with Retrieval-Augmented Generation (RAG) techniques.
+
+#### **Benefits of Using Vector Databases:**
+
+1. **Faster Response Times**:
+   - VectorDBs can significantly speed up response times by enabling faster retrieval of relevant FAQ answers. Instead of generating responses from scratch, the system could quickly search through pre-embedded FAQs to find the closest match, reducing latency and improving user experience.
+
+2. **Improved Accuracy**:
+   - By leveraging embeddings, the AI could better understand the semantic similarities between user queries and stored FAQs. This could lead to more accurate and contextually appropriate responses, enhancing the quality of customer interactions.
+
+#### **Challenges with Implementing VectorDBs Now:**
+
+1. **Complexity of Embedding Management**:
+   - Each corporation provides its own unique set of FAQs, requiring a tailored approach for generating and managing embeddings. Embedding generation is computationally intensive, and maintaining up-to-date embeddings for all corporations could become cumbersome.
+
+2. **Infrastructure Requirements**:
+   - Implementing VectorDBs requires additional infrastructure and storage capabilities, especially for handling large numbers of vectors efficiently. The current setup is designed for simplicity and ease of use, without the need for specialized vector storage.
+
+#### **Future Considerations:**
+
+While the integration of VectorDBs and RAG techniques could offer significant improvements in performance and accuracy, the complexities and infrastructure demands currently outweigh the benefits. As the project evolves, and if there's a need for more sophisticated handling of FAQs across multiple corporations, this approach could be revisited to enhance scalability and responsiveness.
+
+For now, the focus remains on providing a reliable, easy-to-manage solution using OpenAI ChatGPT to address common customer support needs effectively.
