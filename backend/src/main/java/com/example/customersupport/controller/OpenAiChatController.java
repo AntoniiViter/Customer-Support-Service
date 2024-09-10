@@ -1,19 +1,34 @@
 package com.example.customersupport.controller;
 
+import com.example.customersupport.service.CorporationService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+
+import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
 
 
 @RestController
 public class OpenAiChatController {
     private final ChatClient chatClient;
 
-    OpenAiChatController(ChatClient.Builder chatClientBuilder){
-        this.chatClient= chatClientBuilder
+    private final InMemoryChatMemory chatMemory;
+
+    private final CorporationService corporationService;
+
+    OpenAiChatController(ChatClient.Builder chatClientBuilder, CorporationService corporationService){
+
+        this.corporationService = corporationService;
+        this.chatMemory = new InMemoryChatMemory();
+        this.chatClient = chatClientBuilder
                 .defaultSystem("""
                         You are a personalized AI assistant designed for customer support services.
                         Each corporation you work with provides a tailored list of frequently asked questions
@@ -31,14 +46,31 @@ public class OpenAiChatController {
                         {FAQ}
 \t""")
                 .defaultAdvisors(
-                        new PromptChatMemoryAdvisor(new InMemoryChatMemory())
-                )
+                        new PromptChatMemoryAdvisor(chatMemory))
                 .build();
     }
 
-    @GetMapping("chat/{message}")
-    String getResponseBack(@PathVariable String message){ //Temporarily a String, not a good practice
-        return this.chatClient.prompt().system(s -> s.param("FAQ", "TODO")).user(message).call().content();
+    @GetMapping("{corp_name}/chat/{message}")
+    String getResponseBack(@PathVariable String corp_name, @PathVariable String message, HttpSession session){ //Temporarily a String, not a good practice
+        // Check if the corporation exists
+        if (corporationService.findByName(corp_name).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Corporation not found");
+        }
+
+        String sessionId = session.getId();
+
+        //TODO: FAQ retrieval logik
+        String response = this.chatClient.prompt().system(s -> s.param("FAQ", "TODO"))
+                .user(message)
+                .advisors(a -> a.param(CHAT_MEMORY_CONVERSATION_ID_KEY, sessionId))
+                .call().content();
+
+
+        //TODO: Check if conversation history can be directly saved to the DB
+        var memory = chatMemory.get(sessionId, Integer.MAX_VALUE);
+        return response;
+
+        //TODO: Verify if a conversation with the current session ID exists in the database, and update the session if necessary
     }
 }
 

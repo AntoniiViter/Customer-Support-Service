@@ -1,0 +1,1 @@
+ALTER TABLE corporations DROP COLUMN IF EXISTS username;
