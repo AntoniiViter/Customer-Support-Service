@@ -51,15 +51,15 @@ The application is a customer support service with the following key functionali
 
 ### **3. Authentication and Session Logic**
 
-- **3.1. Implement User Authentication for Corporations**: *In Progress*
+- **3.1. Implement User Authentication for Corporations**: *Done*
 
-- **3.2. Manage Client Sessions**: *To Do*
+- **3.2. Manage Client Sessions**: *Done*
 
 ### **4. Business Logic Implementation**
 
-- **4.1. FAQ Management Logic**: *To Do*
+- **4.1. FAQ Management Logic**: *In Progress*
 
-- **4.2. Conversation Handling and Escalation Logic**: *To Do*
+- **4.2. Conversation Handling and Escalation Logic**: *In Progress*
 
 ### **5. Frontend Integration**: *Backlog*
 
@@ -90,3 +90,27 @@ While the current integration with OpenAI's ChatGPT and Spring AI provides a sol
 While the integration of VectorDBs and RAG techniques could offer significant improvements in performance and accuracy, the complexities and infrastructure demands currently outweigh the benefits. As the project evolves, and if there's a need for more sophisticated handling of FAQs across multiple corporations, this approach could be revisited to enhance scalability and responsiveness.
 
 For now, the focus remains on providing a reliable, easy-to-manage solution using OpenAI ChatGPT to address common customer support needs effectively.
+
+---
+
+### Session Tokens vs JWT Tokens
+
+In this project, **session-based conversation logic** was chosen to manage user interactions with the chatbot, particularly for clients of corporations. This decision shaped the choice not to use **JWT (JSON Web Tokens)** for authentication and authorization.
+
+#### Why Session Tokens Were Chosen:
+
+- **Stateful Approach Fits the Use Case**: Since the conversation with the chatbot is tied to a specific session, it made sense to use Spring Boot's built-in session management. This keeps the application stateful, ensuring that the session is persistent across requests within a session context.
+
+- **Avoiding Complexity**: Using JWT tokens would require turning off Spring Boot's default session management, effectively making the application **stateless**. This would mean re-implementing session management manually, which introduces unnecessary complexity for the current scope of the application.
+
+- **Overkill for Now**: For this particular use case, JWT tokens would be overkill. Given that the chatbot logic is session-based and doesn't require stateless behavior for clients, the benefits of using JWT, such as decentralization and statelessness, are not essential at this point.
+
+#### Future Considerations for JWT:
+
+- **JWT for Further Improvements**: While session tokens are sufficient for now, **JWT tokens** could be considered for future improvements. JWT offers several advantages, such as scalability and more flexible authentication across different services or platforms. However, adopting JWT would mean reworking the current architecture to handle token-based authentication.
+
+- **Hybrid Approach**: It's also possible to adopt a **hybrid approach** in the future, where some endpoints remain stateful using session tokens (such as conversation management), while others (e.g., APIs used by corporations) can be stateless and use JWT tokens for authentication.
+
+- **Conversation Management Flexibility**: The session-based conversation logic could also evolve in the future to handle conversations differently, perhaps by decoupling them from session tokens or adopting token-based systems, depending on how the app grows.
+
+In summary, the choice of session tokens was made to keep things simple and aligned with the stateful nature of chatbot conversations. As the app evolves, however, using JWT tokens for specific stateless endpoints and improving overall scalability remains an option for future consideration.
