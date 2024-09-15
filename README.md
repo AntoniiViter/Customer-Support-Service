@@ -1,10 +1,71 @@
 # **Customer-Support-Service**
 
-I've recently learned and refined many fascinating concepts in the software engineering field, such as **gRPC**, **Unit/Mock/Integration Testing**, **MVC**, **REST**, various **design patterns**, **SpringBoot**, proper **Git workflows**, **build systems**, and **Continuous Integration**. Now, I'm eager to apply this knowledge, along with my experience from hackathons and other projects, to build something substantial.
+I've recently learned and refined many fascinating concepts in the software engineering field, such as **gRPC**, **Unit/Mock/Integration Testing**, **MVC**, **REST**, various **design patterns**, **SpringBoot**, proper **Git workflows**, **build systems**, and **Continuous Integration**. Now, I've reached the point where the backend part of the application is already fully implemented, including session management, conversation handling with GPT, and CI/CD processes.
 
-Whether it's a personal project or a corporate initiative, I'm excited to get started. My next endeavor will be developing a **customer support platform** with a built-in customizable **GPT model** and other features commonly found in such services.
+Whether it's a personal project or a corporate initiative, I'm excited to continue developing and eventually integrate a frontend interface.
 
-I'm ready to put this knowledge into practice and create something impactful!
+---
+
+## **How to Start the Application**
+
+Follow these steps to clone the repository, build, and start the application using Docker:
+
+### **1. Clone the Repository**
+
+First, you'll need to clone the repository from GitHub to your local machine. Open a terminal and run the following command:
+
+```bash
+git clone https://github.com/AntoniiViter/Customer-Support-Service.git
+```
+
+Navigate into the project directory:
+
+```bash
+cd Customer-Support-Service
+```
+
+### **2. Start the Application Using Docker**
+
+The application is fully containerized with Docker, including the databases (MongoDB, PostgreSQL, and Redis). To start the application:
+
+#### **Initial Run**
+
+For the first time, you'll need to build the necessary Docker images. Use the `--build` flag to ensure everything is set up correctly:
+
+```bash
+docker-compose up --build
+```
+
+This command will:
+- Build the Docker images for the application and its dependencies.
+- Start the containers for the application, MongoDB, PostgreSQL, and Redis.
+- Set up the necessary environment and dependencies.
+
+#### **Subsequent Runs**
+
+After the initial build, you can start the application without rebuilding the images:
+
+```bash
+docker-compose up
+```
+
+### **3. Access the Application**
+
+Once the containers are up and running, you can access the application at:
+
+```
+http://localhost:8080
+```
+
+To try out the support chatbot, you can send a message to it by navigating to:
+
+```
+http://localhost:8080/admin/support?message=your%20message
+```
+
+Replace `your%20message` with the text you want to send to the chatbot. This URL allows you to interact with the GPT-powered chatbot through the application's support interface.
+
+This setup enables you to quickly start and test the backend functionality of the application without manual configuration.
 
 ---
 
@@ -13,27 +74,51 @@ I'm ready to put this knowledge into practice and create something impactful!
 The application is a customer support service with the following key functionalities:
 
 1. **Corporation Registration and Login**:
-   - Corporations can register and log in to the application via a web interface.
-   - Upon logging in, each corporation accesses a dedicated dashboard.
+   - Corporations can register and log in via API endpoints.
+   - Upon successful registration and login, corporations can manage their client interactions, FAQs, and conversation history.
 
 2. **FAQ Management**:
-   - Corporations can create, update, and manage a list of frequently asked questions (FAQs) through their dashboard.
-   - The FAQ list is fed into a ChatGPT model to create an automated customer service representative that interacts with clients.
+   - Corporations can create, update, and manage a list of frequently asked questions (FAQs) through API endpoints.
+   - These FAQs are utilized by the integrated GPT model to provide automated responses to client inquiries.
 
-3. **Client Interaction and Conversation Handling**:
-   - Clients (end users) initiate conversations with the ChatGPT model through the corporation’s support interface.
-   - Each client must provide their email address before starting a conversation. The email serves as a unique identifier and is stored in the database.
-   - Clients have the option to provide their name, but it is not mandatory.
+3. **Anonymous Client Interaction and Conversation Handling**:
+   - Sessions for unauthenticated users are managed using Redis, providing efficient session handling.
+   - Clients can start conversations anonymously without providing an email address. If they wish to escalate the conversation, they can provide their email to the assistant, which will then automatically escalate the issue using the provided email.
 
-4. **Conversation Management**:
-   - Each conversation session is stored in the database with a unique identifier (ID).
-   - Conversations are associated with client emails and the respective corporation.
-   - If the model cannot provide an adequate answer, the conversation will be flagged and forwarded to a shared corporate support email.
+4. **Conversation Management and Storage**:
+   - The GPT-powered chatbot handles client interactions using business logic that includes:
+     - Email recognition.
+     - Conversation state management.
+     - Workflow management.
+   - Conversations are streamed in real-time, enhancing user experience by eliminating the wait for full response generation.
+   - All conversations are automatically saved in both MongoDB and PostgreSQL, ensuring data consistency and availability.
+   - If the GPT model cannot adequately respond to a query, the conversation can be flagged and forwarded to a shared corporate support email for human intervention.
 
-5. **Data Storage Requirements**:
+5. **Session Management**:
+   - Integrated Redis is used for session storage and management, ensuring efficient handling of client sessions, including those of unauthenticated users.
+   - The application keeps track of the ongoing conversation and the associated corporation, preventing users from initiating new conversations with a different corporation until the current one is ended.
+
+6. **Data Storage Requirements**:
    - **Corporation Data**: Includes registration credentials, FAQ lists, and associated client information (stored in PostgreSQL).
    - **Client Data**: Includes unique emails, conversation IDs associated with them, and optional names (stored in PostgreSQL).
-   - **Conversation Data**: Includes the full conversation history with GPT, along with a reference to the corporation and client, specifically the conversation IDs, which are also stored in PostgreSQL (stored in MongoDB).
+   - **Conversation Data**: Includes the full conversation history with GPT, along with a reference to the corporation and client, specifically the conversation IDs (stored in MongoDB).
+
+7. **Scheduled Events**:
+   - **Database Synchronization**: Periodically cleans and synchronizes both MongoDB and PostgreSQL databases to maintain data integrity.
+   - **Conversation Cleanup**: Automatically removes potentially failed or closed conversations to ensure that both databases are up-to-date and free from redundant data.
+   - **Performance Optimization**: These scheduled tasks help optimize performance by reducing the storage of unnecessary data, ensuring a more efficient and streamlined operation of the system.
+
+8. **Testing and CI Integration**:
+   - The project includes a comprehensive testing setup:
+     - One mock/unit test to verify individual components.
+     - One integration test that runs in a separate test container to ensure that different parts of the application work together as expected.
+   - Continuous Integration (CI) is configured using GitHub Actions to run these tests automatically on every push and pull request, ensuring code quality and reliability.
+   - Test results and build status are visible through the GitHub Actions widget: ![CI Build](https://github.com/AntoniiViter/Customer-Support-Service/actions/workflows/gradle-test.yml/badge.svg)
+   
+9. **Dockerization**:
+   - The entire application, including databases (MongoDB, PostgreSQL, and Redis), is fully containerized.
+   - The application can be started using `docker-compose up --build` for the initial setup to build the necessary Docker images. Subsequent runs can use `docker-compose up`.
+   - The application is accessible on port 8080.
 
 ---
 
@@ -53,15 +138,20 @@ The application is a customer support service with the following key functionali
 
 - **3.1. Implement User Authentication for Corporations**: *Done*
 
-- **3.2. Manage Client Sessions**: *Done*
+- **3.2. Manage Client Sessions with Redis**: *Done*
 
 ### **4. Business Logic Implementation**
 
-- **4.1. FAQ Management Logic**: *In Progress*
+- **4.1. FAQ Management Logic**: *Done*
 
-- **4.2. Conversation Handling and Escalation Logic**: *In Progress*
+- **4.2. Conversation Handling and Escalation Logic**: *Done*
 
-### **5. Frontend Integration**: *Backlog*
+### **5. Testing and CI Integration**
+
+- **5.1. Implement Unit and Integration Tests**: *Done*
+- **5.2. Set up GitHub Actions for CI**: *Done*
+
+### **6. Frontend Integration**: *Backlog*
 
 ---
 
