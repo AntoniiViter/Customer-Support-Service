@@ -16,7 +16,7 @@ public class AuthCorporationDetails implements UserDetails {
     }
 
     public String getCorpName() {
-        return corporation.getCorpName();  // returns the corp_name field from the user entity
+        return corporation.getCorpName();
     }
 
     @Override

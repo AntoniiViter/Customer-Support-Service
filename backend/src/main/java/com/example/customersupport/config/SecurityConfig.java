@@ -7,17 +7,17 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 
 
+
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 public class SecurityConfig {
-
     private final JpaCorporationDetailsService myCorporationDetailsService;
 
     public SecurityConfig(JpaCorporationDetailsService myCorporationDetailsService) {
@@ -26,19 +26,19 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.formLogin(Customizer.withDefaults())
+        return http
+                .csrf(AbstractHttpConfigurer::disable) //enable in production (disabled for CRUD requests via postmen)
+                .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                // Publicly accessible endpoints
-                                .requestMatchers("/login", "/registration", "/{corp_name}/chat/**").permitAll()
-
                                 // Endpoints accessible to authenticated users and admin
-                                .requestMatchers("/{corp_name}/clients", "/{corp_name}/faqs", "/{corp_name}/account", "/{corp_name}/conversations")
+                                .requestMatchers(
+                                        "/{corpName}/account/**", "/{corpName}/account/**", "/{corpName}/faqs/**", "/{corpName}/clients/**", "/{corpName}/conversations/**")
                                 .access(new WebExpressionAuthorizationManager(
-                                        "hasRole('ADMIN') or #corp_name == authentication.principal.corpName"))
+                                        "principal.corpName == #corpName or hasRole('ADMIN')"))
 
-                                // Endpoint only accessible to admin
-                                .requestMatchers("/corporations").hasRole("ADMIN")
+                                // Publicly accessible endpoints
+                                .requestMatchers("/{corpName}/support/**", "/login", "/registration").permitAll()
 
                                 // Any other request must be authenticated (e.g. logout)
                                 .anyRequest().authenticated()
@@ -46,7 +46,6 @@ public class SecurityConfig {
                 .userDetailsService(myCorporationDetailsService)
                 .build();
     }
-
 
     @Bean
     PasswordEncoder passwordEncoder() {

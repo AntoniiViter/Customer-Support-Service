@@ -32,9 +32,16 @@ dependencies {
     implementation "me.paulschwarz:spring-dotenv:2.5.4"
     implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
 
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    //migrations
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
 
+    //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -43,13 +50,24 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
-
     // Database Drivers
     runtimeOnly 'org.postgresql:postgresql'
 
     // Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.testcontainers:mongodb'
+    implementation 'com.redis.testcontainers:testcontainers-redis:1.6.4'
+
+
+    //docker
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
 }
 
 dependencyManagement {
@@ -59,5 +77,6 @@ dependencyManagement {
 }
 
 test {
+    useJUnit()
     useJUnitPlatform()
 }

@@ -21,8 +21,7 @@ public class AuthGrantedAuthority implements GrantedAuthority {
 
     private String authority;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "corporation_id")
     private Corporation corporation;
-
 }

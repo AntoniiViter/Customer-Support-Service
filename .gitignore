@@ -1,26 +1,47 @@
-# Java and Spring Boot
+# Compiled class files
 *.class
-*.jar
+
+# Log files
+*.log
+logs/
+
+# Package Files
 *.war
 *.ear
-*.iml
 
-# Build directories
-/build/
+# Build directories (you want to keep source code but exclude compiled artifacts)
+build/
 out/
 target/
 
 # Gradle
 .gradle/
-build/
 
-# Logs
-*.log
-logs/
+# Include Gradle wrapper scripts and jar
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 
-# IDEs and Editors
-/.idea/
-/*.iml
+# Maven (if using, otherwise keep this section as it is)
+.mvn/
+!**/mvnw
+!**/mvnw.cmd
+!**/.mvn/wrapper/maven-wrapper.jar
+!**/.mvn/wrapper/maven-wrapper.properties
+
+# Distribution directories
+/dist/
+distributions/
+
+# Spring Boot specific
+.spring-boot-devtools.properties
+
+# IDE and editor directories/files
+.idea/
+*.iws
+*.iml
+*.ipr
 .vscode/
 *.swp
 *.swo
@@ -29,21 +50,12 @@ logs/
 *.settings/
 /*.factorypath
 
-# Operating system files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Application files
-application.properties
-application-dev.properties
-
-# Node.js (for frontend)
+# Dependency directory
 node_modules/
-npm-debug.log
-yarn-error.log
-
-# React specific
-/dist/
 
 # Coverage and Test Reports
 /test-output/
@@ -56,16 +68,5 @@ coverage/
 *.old
 *.orig
 
-# Dependency directories
-.mvn/
-
 # Environment files
 .env
-
-# Generated files by Spring Boot DevTools
-.spring-boot-devtools.properties
-
-# JetBrains IDEs
-.idea/
-*.iws
-*.ipr
