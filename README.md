@@ -24,7 +24,49 @@ Navigate into the project directory:
 cd Customer-Support-Service
 ```
 
-### **2. Start the Application Using Docker**
+You can add the following instructions to the README file for creating and editing the `.env` file in the `resources` folder:
+
+### **1. Create the `.env` File and specify OPENAI_API_KEY**
+
+Before starting the application, you need to create a `.env` file in the `resources` folder and set the `OPENAI_API_KEY`. Here’s how you can do it:
+
+1. Navigate to the `resources` folder in your project directory:
+
+   ```bash
+   cd ./backend/src/main/resources
+   ```
+
+2. Create and open the `.env` file using a text editor. You can use `nano`, `vim`, or any other editor of your choice.
+
+   **Using `nano`:**
+
+   ```bash
+   nano .env
+   ```
+
+   **Using `vim`:**
+
+   ```bash
+   vim .env
+   ```
+
+   **Using `Visual Studio Code` (if you have it installed):**
+
+   ```bash
+   code .env
+   ```
+
+3. Add the following line to the `.env` file:
+
+   ```bash
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+4. Save and close the file.
+
+Make sure to replace `your_openai_api_key_here` with your actual OpenAI API key. This key will be used by the application to interact with the GPT model.
+
+### **3. Start the Application Using Docker**
 
 The application is fully containerized with Docker, including the databases (MongoDB, PostgreSQL, and Redis). To start the application:
 
@@ -49,7 +91,7 @@ After the initial build, you can start the application without rebuilding the im
 docker-compose up
 ```
 
-### **3. Access the Application**
+### **4. Access the Application**
 
 Once the containers are up and running, you can access the application at:
 
