@@ -133,7 +133,7 @@ The application is a customer support service with the following key functionali
    
 9. **Dockerization**:
    - The entire application, including databases (MongoDB, PostgreSQL, and Redis), is fully containerized.
-   - The application can be started using `docker-compose up.
+   - The application can be started using `docker-compose up`.
    - The application is accessible on port 8080.
 
 ---
