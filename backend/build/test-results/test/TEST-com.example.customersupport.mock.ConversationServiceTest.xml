@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.customersupport.mock.ConversationServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-09-15T23:31:36" hostname="MBP-von-Antonij.fritz.box" time="0.188">
+<testsuite name="com.example.customersupport.mock.ConversationServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-09-16T00:30:42" hostname="MBP-von-Antonij.fritz.box" time="0.202">
   <properties/>
-  <testcase name="testOpenConversation()" classname="com.example.customersupport.mock.ConversationServiceTest" time="0.188"/>
+  <testcase name="testOpenConversation()" classname="com.example.customersupport.mock.ConversationServiceTest" time="0.202"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -24,68 +24,42 @@ Navigate into the project directory:
 cd Customer-Support-Service
 ```
 
-You can add the following instructions to the README file for creating and editing the `.env` file in the `resources` folder:
+---
 
-### **1. Create the `.env` File and specify OPENAI_API_KEY**
+### **2. Set the `OPENAI_API_KEY` Environment Variable**
 
-Before starting the application, you need to create a `.env` file in the `resources` folder and set the `OPENAI_API_KEY`. Here’s how you can do it:
+Before starting the application, you need to set the `OPENAI_API_KEY` environment variable. Here’s how you can do it:
 
-1. Navigate to the `resources` folder in your project directory:
+1. Open your terminal.
 
-   ```bash
-   cd ./backend/src/main/resources
-   ```
-
-2. Create and open the `.env` file using a text editor. You can use `nano`, `vim`, or any other editor of your choice.
-
-   **Using `nano`:**
+2. Use the `export` command to set the `OPENAI_API_KEY`:
 
    ```bash
-   nano .env
+   export OPENAI_API_KEY=your_openai_api_key_here
    ```
 
-   **Using `vim`:**
+   Make sure to replace `your_openai_api_key_here` with your actual OpenAI API key. This key will be used by the application to interact with the GPT model.
+
+3. Verify that the environment variable is set correctly by running:
 
    ```bash
-   vim .env
+   echo $OPENAI_API_KEY
    ```
 
-   **Using `Visual Studio Code` (if you have it installed):**
+   This should display your OpenAI API key, indicating that it has been set correctly for the current terminal session.
 
-   ```bash
-   code .env
-   ```
+### Important Note:
+- This environment variable is set for the current terminal session. If you open a new terminal session or restart your system, you will need to set the environment variable again using the `export` command.
 
-3. Add the following line to the `.env` file:
+By using the `export` command, you can set the environment variable directly in the terminal without the need for creating a `.env` file.
 
-   ```bash
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-4. Save and close the file.
-
-Make sure to replace `your_openai_api_key_here` with your actual OpenAI API key. This key will be used by the application to interact with the GPT model.
+---
 
 ### **3. Start the Application Using Docker**
 
 The application is fully containerized with Docker, including the databases (MongoDB, PostgreSQL, and Redis). To start the application:
 
 #### **Initial Run**
-
-For the first time, you'll need to build the necessary Docker images. Use the `--build` flag to ensure everything is set up correctly:
-
-```bash
-docker-compose up --build
-```
-
-This command will:
-- Build the Docker images for the application and its dependencies.
-- Start the containers for the application, MongoDB, PostgreSQL, and Redis.
-- Set up the necessary environment and dependencies.
-
-#### **Subsequent Runs**
-
-After the initial build, you can start the application without rebuilding the images:
 
 ```bash
 docker-compose up
