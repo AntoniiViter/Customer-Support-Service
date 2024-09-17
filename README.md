@@ -1,18 +1,70 @@
 # **Customer-Support-Service**
 
-I've recently learned and refined many fascinating concepts in the software engineering field, such as **gRPC**, **Unit/Mock/Integration Testing**, **MVC**, **REST**, various **design patterns**, **SpringBoot**, proper **Git workflows**, **build systems**, and **Continuous Integration**. Now, I've reached the point where the backend part of the application is already fully implemented, including session management, conversation handling with GPT, and CI/CD processes.
+I've recently learned and refined many fascinating concepts in the software engineering field, such as **gRPC**, **Unit/Mock/Integration Testing**, **MVC**, **REST**, various **design patterns**, **SpringBoot**, proper **Git workflows**, **build systems**, **Docker** and **Continuous Integration**. 
 
-Whether it's a personal project or a corporate initiative, I'm excited to continue developing and eventually integrate a frontend interface.
+With these skills in hand, I've reached the point where the backend part of my application is fully implemented. This includes session management, conversation handling with GPT, established CI/CD processes, Dockerization, and more.
+
+Whether it's for a personal project or a corporate initiative, I'm excited to continue developing my skills and knowledge. As I see it, my next milestone involves diving deeper into cloud development and MLOps.
+
+---
+
+## **Summary of Application’s Functionality**
+
+The application is a customer support service with the following key functionalities:
+
+1. **Corporation Registration and Login**:
+   - Corporations can register and log in via API endpoints.
+   - Upon successful registration and login, corporations can manage their client interactions, FAQs, and conversation history.
+
+2. **FAQ Management**:
+   - Corporations can create, update, and manage a list of frequently asked questions (FAQs) through API endpoints.
+   - These FAQs are utilized by the integrated GPT model to provide automated responses to client inquiries.
+
+3. **Anonymous Client Interaction and Conversation Handling**:
+   - Sessions for unauthenticated users are managed using Redis, providing efficient session handling.
+   - Clients can start conversations anonymously without providing an email address. If they wish to escalate the conversation, they can provide their email to the assistant, which will then automatically escalate the issue using the provided email.
+
+4. **Conversation Management and Storage**:
+   - The GPT-powered chatbot handles client interactions using business logic that includes:
+     - Email recognition.
+     - Conversation state management.
+     - Workflow management.
+   - Conversations are streamed in real-time, enhancing user experience by eliminating the wait for full response generation.
+   - All conversations are automatically saved in both MongoDB and PostgreSQL, ensuring data consistency and availability.
+   - If the GPT model cannot adequately respond to a query, it will suggest escalating the conversation, which will then be automatically flagged for further review.
+
+5. **Session Management**:
+   - Integrated Redis is used for session storage and management, ensuring efficient handling of client sessions, including those of unauthenticated users.
+   - The application keeps track of the ongoing conversation and the associated corporation, client's email and identity if it was provided.
+
+6. **Data Storage Requirements**:
+   - **Corporation Data**: Includes registration credentials, FAQ lists, and associated client information (stored in PostgreSQL).
+   - **Client Data**: Includes unique emails, conversation IDs associated with them, and optional names (stored in PostgreSQL).
+   - **Conversation Data**: Includes the full conversation history with GPT, along with a reference to the corporation and client, specifically the conversation IDs (stored in MongoDB).
+
+7. **Scheduled Events**:
+   - **Conversation Cleanup**: Automatically removes potentially failed or closed conversations to ensure that both databases are up-to-date and free from redundant data.
+   - **Performance Optimization**: These scheduled tasks help optimize performance by reducing the storage of unnecessary data, ensuring a more efficient and streamlined operation of the system.
+
+8. **Testing and CI Integration**:
+   - The project includes an initial testing setup:
+     - One mock/unit test to verify individual components.
+     - One integration test that runs in a separate test container to ensure that different parts of the application work together as expected.
+   - Continuous Integration (CI) is configured using GitHub Actions to run these tests automatically on every push and pull request, ensuring code quality and reliability.
+   - Test results and build status are visible through the GitHub Actions widget: ![CI Build](https://github.com/AntoniiViter/Customer-Support-Service/actions/workflows/gradle-test.yml/badge.svg)
+   
+9. **Dockerization**:
+   - The entire application, including databases (MongoDB, PostgreSQL, and Redis), is fully containerized.
+   - The application can be started using `docker-compose up`.
+   - The application is accessible on port 8080.
 
 ---
 
 ## **How to Start the Application**
 
-Follow these steps to clone the repository, build, and start the application using Docker:
+### 1. (Optional) Clone the Repository
 
-### **1. Clone the Repository**
-
-First, you'll need to clone the repository from GitHub to your local machine. Open a terminal and run the following command:
+If you want to debug, compile, or edit the source code, clone the repository using the command below:
 
 ```bash
 git clone https://github.com/AntoniiViter/Customer-Support-Service.git
@@ -55,25 +107,32 @@ By using the `export` command, you can set the environment variable directly in 
 
 ---
 
-### **3. Start the Application Using Docker**
+### 3. Start the Application Using Docker
 
 The application is fully containerized with Docker, including the databases (MongoDB, PostgreSQL, and Redis). To start the application:
 
-#### **Initial Run**
+- If you **cloned the repository** in Step 1, simply run Docker Compose in the project directory:
 
-```bash
-docker-compose up
-```
+    ```bash
+    docker-compose up
+    ```
 
-### **4. Access the Application**
+- If you **skipped Step 1**, you'll need to download or copy the `docker-compose.yml` file to your local device. Save this file in any directory where you want to run the application. Then, navigate to that directory and run:
 
-Once the containers are up and running, you can access the application at:
+    ```bash
+    cd your-local-directory
+    docker-compose up
+    ```
 
-```
-http://localhost:8080
-```
+This will start the application using Docker, and the necessary containers will be created and run.
 
-To try out the support chatbot, you can send a message to it by navigating to:
+---
+
+### 4. Access the Application
+
+Once the containers are up and running, navigating to the initial endpoint `/` of the application at `http://localhost:8080` will result in an expected 404 error since it is not set up. To discover the available endpoints and understand their functionality, you can review the controller classes in the project's source code. 
+
+If you want to try out the support chatbot, which is customized for FAQs of an initially set up corporation called "admin" you can send a message to it by navigating to:
 
 ```
 http://localhost:8080/admin/support?message=your%20message
@@ -82,92 +141,6 @@ http://localhost:8080/admin/support?message=your%20message
 Replace `your%20message` with the text you want to send to the chatbot. This URL allows you to interact with the GPT-powered chatbot through the application's support interface.
 
 This setup enables you to quickly start and test the backend functionality of the application without manual configuration.
-
----
-
-## **Summary of Application’s Functionality**
-
-The application is a customer support service with the following key functionalities:
-
-1. **Corporation Registration and Login**:
-   - Corporations can register and log in via API endpoints.
-   - Upon successful registration and login, corporations can manage their client interactions, FAQs, and conversation history.
-
-2. **FAQ Management**:
-   - Corporations can create, update, and manage a list of frequently asked questions (FAQs) through API endpoints.
-   - These FAQs are utilized by the integrated GPT model to provide automated responses to client inquiries.
-
-3. **Anonymous Client Interaction and Conversation Handling**:
-   - Sessions for unauthenticated users are managed using Redis, providing efficient session handling.
-   - Clients can start conversations anonymously without providing an email address. If they wish to escalate the conversation, they can provide their email to the assistant, which will then automatically escalate the issue using the provided email.
-
-4. **Conversation Management and Storage**:
-   - The GPT-powered chatbot handles client interactions using business logic that includes:
-     - Email recognition.
-     - Conversation state management.
-     - Workflow management.
-   - Conversations are streamed in real-time, enhancing user experience by eliminating the wait for full response generation.
-   - All conversations are automatically saved in both MongoDB and PostgreSQL, ensuring data consistency and availability.
-   - If the GPT model cannot adequately respond to a query, the conversation can be flagged and forwarded to a shared corporate support email for human intervention.
-
-5. **Session Management**:
-   - Integrated Redis is used for session storage and management, ensuring efficient handling of client sessions, including those of unauthenticated users.
-   - The application keeps track of the ongoing conversation and the associated corporation, preventing users from initiating new conversations with a different corporation until the current one is ended.
-
-6. **Data Storage Requirements**:
-   - **Corporation Data**: Includes registration credentials, FAQ lists, and associated client information (stored in PostgreSQL).
-   - **Client Data**: Includes unique emails, conversation IDs associated with them, and optional names (stored in PostgreSQL).
-   - **Conversation Data**: Includes the full conversation history with GPT, along with a reference to the corporation and client, specifically the conversation IDs (stored in MongoDB).
-
-7. **Scheduled Events**:
-   - **Database Synchronization**: Periodically cleans and synchronizes both MongoDB and PostgreSQL databases to maintain data integrity.
-   - **Conversation Cleanup**: Automatically removes potentially failed or closed conversations to ensure that both databases are up-to-date and free from redundant data.
-   - **Performance Optimization**: These scheduled tasks help optimize performance by reducing the storage of unnecessary data, ensuring a more efficient and streamlined operation of the system.
-
-8. **Testing and CI Integration**:
-   - The project includes a comprehensive testing setup:
-     - One mock/unit test to verify individual components.
-     - One integration test that runs in a separate test container to ensure that different parts of the application work together as expected.
-   - Continuous Integration (CI) is configured using GitHub Actions to run these tests automatically on every push and pull request, ensuring code quality and reliability.
-   - Test results and build status are visible through the GitHub Actions widget: ![CI Build](https://github.com/AntoniiViter/Customer-Support-Service/actions/workflows/gradle-test.yml/badge.svg)
-   
-9. **Dockerization**:
-   - The entire application, including databases (MongoDB, PostgreSQL, and Redis), is fully containerized.
-   - The application can be started using `docker-compose up`.
-   - The application is accessible on port 8080.
-
----
-
-## **TODOs for Implementing the Application**
-
-### **1. Database Connections**
-
-- **1.1. Set up PostgreSQL Connection**: *Done*
-
-- **1.2. Set up MongoDB Connection**: *Done*
-
-### **2. Model Connection (ChatGPT Integration)**
-
-- **2.1. Set up API Connection to ChatGPT**: *Done*
-
-### **3. Authentication and Session Logic**
-
-- **3.1. Implement User Authentication for Corporations**: *Done*
-
-- **3.2. Manage Client Sessions with Redis**: *Done*
-
-### **4. Business Logic Implementation**
-
-- **4.1. FAQ Management Logic**: *Done*
-
-- **4.2. Conversation Handling and Escalation Logic**: *Done*
-
-### **5. Testing and CI Integration**
-
-- **5.1. Implement Unit and Integration Tests**: *Done*
-- **5.2. Set up GitHub Actions for CI**: *Done*
-
-### **6. Frontend Integration**: *Backlog*
 
 ---
 
