@@ -130,15 +130,15 @@ This will start the application using Docker, and the necessary containers will 
 
 ### 4. Access the Application
 
-Once the containers are up and running, navigating to the initial endpoint `/` of the application at `http://localhost:8080` will result in an expected 404 error since it is not set up. To discover the available endpoints and understand their functionality, you can review the controller classes in the project's source code. 
+Once the containers are up and running, navigating to the initial endpoint `/` of the application at `http://localhost:8080` will prompt you to authenticate. You can log in as an admin user by entering `admin@example.com` as the username and `password` as the password. After successful authentication, navigating to the root endpoint will result in a 404 error since it is not set up. To discover the available endpoints and understand their functionality, you can review the controller classes in the project's source code.  
 
-If you want to try out the support chatbot, which is customized for FAQs of an initially set up corporation called "admin" you can send a message to it by navigating to:
+If you want to try out the support chatbot, which is customized for FAQs of an initially set up corporation called "admin" (a.k. admin user) you can send a message to it by navigating to:
 
 ```
 http://localhost:8080/admin/support?message=your%20message
 ```
 
-Replace `your%20message` with the text you want to send to the chatbot. This URL allows you to interact with the GPT-powered chatbot through the application's support interface.
+Replace `your%20message` with the text you want to send to the chatbot. This URL allows you to interact with the GPT-powered chatbot through the application's support interface even without authentication.
 
 This setup enables you to quickly start and test the backend functionality of the application without manual configuration.
 
