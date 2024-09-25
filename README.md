@@ -1,6 +1,6 @@
 # **Customer-Support-Service**
 
-I've recently learned and refined many fascinating concepts in the software engineering field, such as **gRPC**, **Unit/Mock/Integration Testing**, **MVC**, **REST**, various **design patterns**, **SpringBoot**, proper **Git workflows**, **build systems**, **Docker** and **Continuous Integration**. 
+Throughout my journey in software development I’ve learned and refined many fascinating concepts in the field, such as **gRPC**, **AWS Lambda Functions**, **Unit/Mock/Integration Testing**, **REST**, various **design patterns**, **databases**, proper **Git workflows**, **build systems**, **Docker** and **Continuous Integration**. 
 
 With these skills in hand, I've reached the point where the backend part of my application is fully implemented. This includes session management, conversation handling with GPT, established CI/CD processes, Dockerization, and more.
 
